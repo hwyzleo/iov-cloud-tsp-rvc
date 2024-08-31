@@ -6,7 +6,7 @@ import net.hwyz.iov.cloud.tsp.framework.commons.domain.BaseDo;
 import net.hwyz.iov.cloud.tsp.framework.commons.domain.DomainObj;
 import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
-import net.hwyz.iov.cloud.tsp.rvc.service.domain.contract.enums.RvcCmdType;
+import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 
 import java.util.Date;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class RvcCmdDo extends BaseDo<Long> implements DomainObj<VehicleRvcDo> {
     /**
      * 指令类型
      */
-    private RvcCmdType type;
+    private RemoteControlType type;
     /**
      * 指令参数
      */

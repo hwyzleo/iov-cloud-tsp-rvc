@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import net.hwyz.iov.cloud.tsp.framework.commons.domain.BaseDo;
 import net.hwyz.iov.cloud.tsp.framework.commons.domain.DomainObj;
-import net.hwyz.iov.cloud.tsp.rvc.service.domain.contract.enums.RvcCmdType;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.exception.RvcCmdExecutingException;
+import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class VehicleRvcDo extends BaseDo<String> implements DomainObj<VehicleRvc
      * 当前进行中的远控指令
      * 格式：{远控指令类型:远控指令领域对象}
      */
-    private Map<RvcCmdType, RvcCmdDo> currentCmd;
+    private Map<RemoteControlType, RvcCmdDo> currentCmd;
 
     /**
      * 初始化
@@ -44,10 +44,10 @@ public class VehicleRvcDo extends BaseDo<String> implements DomainObj<VehicleRvc
      * @param rvcCmd 远控指令领域对象
      */
     public void findVehicle(RvcCmdDo rvcCmd) {
-        if (currentCmd.containsKey(RvcCmdType.FIND_VEHICLE)) {
-            throw new RvcCmdExecutingException(vin, RvcCmdType.FIND_VEHICLE);
+        if (currentCmd.containsKey(RemoteControlType.FIND_VEHICLE)) {
+            throw new RvcCmdExecutingException(vin, RemoteControlType.FIND_VEHICLE);
         }
-        currentCmd.put(RvcCmdType.FIND_VEHICLE, rvcCmd);
+        currentCmd.put(RemoteControlType.FIND_VEHICLE, rvcCmd);
     }
 
 }

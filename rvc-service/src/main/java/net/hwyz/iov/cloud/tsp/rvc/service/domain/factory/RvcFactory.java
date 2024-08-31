@@ -1,11 +1,10 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.domain.factory;
 
-import cn.hutool.core.util.IdUtil;
 import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
-import net.hwyz.iov.cloud.tsp.rvc.service.domain.contract.enums.RvcCmdType;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.VehicleRvcDo;
+import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -34,21 +33,22 @@ public class RvcFactory {
     /**
      * 创建远控指令领域对象
      *
-     * @param vin         车架号
-     * @param rvcCmdType  远控指令类型
-     * @param params      远控指令参数
-     * @param accountType 账号类型
-     * @param accountId   账号ID
+     * @param vin               车架号
+     * @param cmdId             指令ID
+     * @param remoteControlType 远控类型
+     * @param params            远控参数
+     * @param accountType       账号类型
+     * @param accountId         账号ID
      * @return 远控指令领域对象
      */
-    public RvcCmdDo buildCmd(String vin, RvcCmdType rvcCmdType, Map<String, Object> params, AccountType accountType, String accountId) {
+    public RvcCmdDo buildCmd(String vin, String cmdId, RemoteControlType remoteControlType, Map<String, Object> params, AccountType accountType, String accountId) {
         if (params == null) {
             params = Map.of();
         }
         RvcCmdDo rvcCmdDo = RvcCmdDo.builder()
                 .vin(vin)
-                .cmdId(IdUtil.simpleUUID())
-                .type(rvcCmdType)
+                .cmdId(cmdId)
+                .type(remoteControlType)
                 .params(params)
                 .cmdState(RvcCmdState.CREATED)
                 .startTime(new Date())

@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
-import net.hwyz.iov.cloud.tsp.rvc.service.domain.contract.enums.RvcCmdType;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.factory.RvcFactory;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.VehicleRvcDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.cache.CacheService;
+import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +46,7 @@ public class CacheServiceImpl implements CacheService {
             JSONObject jsonObject = JSONUtil.parseObj(vehicleRvcDoJson);
             VehicleRvcDo vehicleRvcDo = rvcFactory.buildVehicle(vin);
             String currentCmdJson = jsonObject.getStr("currentCmd");
-            Map<RvcCmdType, JSONObject> currentCmd = JSONUtil.toBean(currentCmdJson, new TypeReference<Map<RvcCmdType, JSONObject>>() {
+            Map<RemoteControlType, JSONObject> currentCmd = JSONUtil.toBean(currentCmdJson, new TypeReference<>() {
             }, true);
             List<RvcCmdDo> rvcCmdList = new ArrayList<>();
             currentCmd.values().forEach(rvcCmd -> {
@@ -54,7 +54,7 @@ public class CacheServiceImpl implements CacheService {
                         .id(rvcCmd.getLong("id"))
                         .vin(rvcCmd.getStr("vin"))
                         .cmdId(rvcCmd.getStr("cmdId"))
-                        .type(RvcCmdType.valueOf(rvcCmd.getStr("type")))
+                        .type(RemoteControlType.valueOf(rvcCmd.getStr("type")))
                         .params(rvcCmd.getJSONObject("params").toBean(new TypeReference<>() {
                         }))
                         .cmdState(RvcCmdState.valueOf(rvcCmd.getStr("cmdState")))
