@@ -1,5 +1,6 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.facade.mp;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import net.hwyz.iov.cloud.tsp.rvc.api.contract.request.ControlRequest;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.response.ControlResponse;
 import net.hwyz.iov.cloud.tsp.rvc.api.feign.mp.RvcMpApi;
 import net.hwyz.iov.cloud.tsp.rvc.service.application.service.RvcAppService;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,6 +38,7 @@ public class RvcMpController implements RvcMpApi {
     @PostMapping("/action/findVehicle")
     public Response<ControlResponse> findVehicle(@RequestBody @Valid ControlRequest controlRequest,
                                                  @RequestHeader ClientAccount clientAccount) {
+        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
         logger.info("手机客户端[{}]寻车[{}]", ParamHelper.getClientAccountInfo(clientAccount), controlRequest.getVin());
         return new Response<>(rvcAppService.findVehicle(controlRequest, clientAccount));
     }

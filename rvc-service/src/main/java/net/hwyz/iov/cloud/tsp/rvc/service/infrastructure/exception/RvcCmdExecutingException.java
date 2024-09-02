@@ -13,7 +13,7 @@ public class RvcCmdExecutingException extends RvcBaseException {
     private static final int ERROR_CODE = 301001;
 
     public RvcCmdExecutingException(String vin, RemoteControlType rvcCmdType) {
-        super(ERROR_CODE, StrUtil.format("车辆[{}}]指令[{}}]正在执行中", vin, rvcCmdType));
+        super(ERROR_CODE, StrUtil.format("车辆[{}]指令[{}]正在执行中", vin, rvcCmdType));
     }
 
 }
