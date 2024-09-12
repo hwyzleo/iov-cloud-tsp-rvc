@@ -22,12 +22,12 @@ public class ControlResponse {
      */
     private String vin;
     /**
-     * 远控请求ID
+     * 远控指令ID
      */
-    private String reqId;
+    private String cmdId;
     /**
-     * 远控请求状态
+     * 远控指令状态
      */
-    private RvcCmdState reqState;
+    private RvcCmdState cmdState;
 
 }

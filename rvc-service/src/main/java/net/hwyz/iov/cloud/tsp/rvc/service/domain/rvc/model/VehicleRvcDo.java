@@ -39,12 +39,19 @@ public class VehicleRvcDo extends BaseDo<String> implements DomainObj<VehicleRvc
     }
 
     /**
+     * 检查是否在进行寻车指令
+     */
+    public RvcCmdDo isFindVehicleExecuting() {
+        return currentCmd.get(RemoteControlType.FIND_VEHICLE);
+    }
+
+    /**
      * 寻车
      *
      * @param rvcCmd 远控指令领域对象
      */
     public void findVehicle(RvcCmdDo rvcCmd) {
-        if (currentCmd.containsKey(RemoteControlType.FIND_VEHICLE)) {
+        if (isFindVehicleExecuting() != null) {
             throw new RvcCmdExecutingException(vin, RemoteControlType.FIND_VEHICLE);
         }
         currentCmd.put(RemoteControlType.FIND_VEHICLE, rvcCmd);

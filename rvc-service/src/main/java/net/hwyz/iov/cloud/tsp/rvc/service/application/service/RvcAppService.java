@@ -44,16 +44,20 @@ public class RvcAppService {
         String vin = controlRequest.getVin();
         logger.info("用户[{}]执行远控：寻车[{}]", clientAccount.getUid(), vin);
         VehicleRvcDo vehicleRvcDo = rvcService.getOrCreate(vin);
-        TboxCmdResponse tboxCmd = exTboxService.remoteControl(RemoteControlRequest.builder()
-                .vin(vin)
-                .type(RemoteControlType.FIND_VEHICLE)
-                .params(controlRequest.getParams())
-                .build());
-        RvcCmdDo rvcCmd = rvcFactory.buildCmd(vin, tboxCmd.getCmdId(), RemoteControlType.FIND_VEHICLE, controlRequest.getParams(), AccountType.USER, clientAccount.getUid());
-        // TODO 后期加省市区
-        vehicleRvcDo.findVehicle(rvcCmd);
-        vehicleRvcRepository.save(vehicleRvcDo);
-        return ControlResponseAssembler.INSTANCE.fromDo(rvcCmd);
+        RvcCmdDo findVehicleCmd = vehicleRvcDo.isFindVehicleExecuting();
+        if (findVehicleCmd == null) {
+            TboxCmdResponse tboxCmd = exTboxService.remoteControl(RemoteControlRequest.builder()
+                    .vin(vin)
+                    .type(RemoteControlType.FIND_VEHICLE)
+                    .params(controlRequest.getParams())
+                    .build());
+            findVehicleCmd = rvcFactory.buildCmd(vin, tboxCmd.getCmdId(), RemoteControlType.FIND_VEHICLE,
+                    controlRequest.getParams(), AccountType.USER, clientAccount.getUid());
+            // TODO 后期加省市区
+            vehicleRvcDo.findVehicle(findVehicleCmd);
+            vehicleRvcRepository.save(vehicleRvcDo);
+        }
+        return ControlResponseAssembler.INSTANCE.fromDo(findVehicleCmd);
     }
 
 }

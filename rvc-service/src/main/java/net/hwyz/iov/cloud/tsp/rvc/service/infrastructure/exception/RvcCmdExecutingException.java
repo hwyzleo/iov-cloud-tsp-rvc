@@ -1,6 +1,6 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.exception;
 
-import cn.hutool.core.util.StrUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 
 /**
@@ -8,12 +8,14 @@ import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
  *
  * @author hwyz_leo
  */
+@Slf4j
 public class RvcCmdExecutingException extends RvcBaseException {
 
     private static final int ERROR_CODE = 301001;
 
     public RvcCmdExecutingException(String vin, RemoteControlType rvcCmdType) {
-        super(ERROR_CODE, StrUtil.format("车辆[{}]指令[{}]正在执行中", vin, rvcCmdType));
+        super(ERROR_CODE);
+        logger.warn("车辆[{}]指令[{}]正在执行中", vin, rvcCmdType);
     }
 
 }

@@ -40,7 +40,7 @@ public class RvcMpController implements RvcMpApi {
                                                  @RequestHeader ClientAccount clientAccount) {
         Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
         logger.info("手机客户端[{}]寻车[{}]", ParamHelper.getClientAccountInfo(clientAccount), controlRequest.getVin());
-        return new Response<>(rvcAppService.findVehicle(controlRequest, clientAccount));
+        return new Response<>("寻车操作成功", rvcAppService.findVehicle(controlRequest, clientAccount));
     }
 
 }

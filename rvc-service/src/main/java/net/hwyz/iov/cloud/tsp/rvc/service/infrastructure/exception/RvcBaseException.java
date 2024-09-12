@@ -15,6 +15,10 @@ public class RvcBaseException extends BaseException {
         super(ERROR_CODE, message);
     }
 
+    public RvcBaseException(int errorCode) {
+        super(errorCode);
+    }
+
     public RvcBaseException(int errorCode, String message) {
         super(errorCode, message);
     }
