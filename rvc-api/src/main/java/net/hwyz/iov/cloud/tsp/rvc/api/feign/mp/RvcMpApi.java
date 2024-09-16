@@ -21,4 +21,13 @@ public interface RvcMpApi {
      */
     Response<ControlResponse> findVehicle(ControlRequest controlRequest, ClientAccount clientAccount);
 
+    /**
+     * 获取寻车状态
+     *
+     * @param vin           车架号
+     * @param clientAccount 终端用户
+     * @return 寻车状态
+     */
+    Response<ControlResponse> getFindVehicleState(String vin, ClientAccount clientAccount);
+
 }

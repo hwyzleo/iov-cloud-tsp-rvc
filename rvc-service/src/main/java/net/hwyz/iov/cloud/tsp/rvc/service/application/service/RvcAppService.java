@@ -13,6 +13,7 @@ import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.VehicleRvcDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.repository.VehicleRvcRepository;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.service.RvcService;
 import net.hwyz.iov.cloud.tsp.rvc.service.facade.assembler.ControlResponseAssembler;
+import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.exception.RvcTypeNotSupportException;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.request.RemoteControlRequest;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.response.TboxCmdResponse;
@@ -56,8 +57,31 @@ public class RvcAppService {
             // TODO 后期加省市区
             vehicleRvcDo.findVehicle(findVehicleCmd);
             vehicleRvcRepository.save(vehicleRvcDo);
+        } else {
+            logger.warn("用户[{}]执行远控：寻车[{}]，正在执行中", clientAccount.getUid(), vin);
         }
         return ControlResponseAssembler.INSTANCE.fromDo(findVehicleCmd);
+    }
+
+    /**
+     * 获取远控功能状态
+     *
+     * @param vin  车架号
+     * @param type 远控类型
+     * @return 远控功能状态
+     */
+    public ControlResponse getControlFunctionState(String vin, RemoteControlType type) {
+        logger.info("获取车辆[{}]远控功能[{}]状态", vin, type);
+        VehicleRvcDo vehicleRvcDo = rvcService.getOrCreate(vin);
+        RvcCmdDo rvcCmdDo = null;
+        switch (type) {
+            case FIND_VEHICLE -> rvcCmdDo = vehicleRvcDo.isFindVehicleExecuting();
+            default -> throw new RvcTypeNotSupportException(vin, type);
+        }
+        if (rvcCmdDo != null) {
+            return ControlResponseAssembler.INSTANCE.fromDo(rvcCmdDo);
+        }
+        return null;
     }
 
 }

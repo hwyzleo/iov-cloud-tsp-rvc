@@ -50,7 +50,7 @@ public class RvcFactory {
                 .cmdId(cmdId)
                 .type(remoteControlType)
                 .params(params)
-                .cmdState(RvcCmdState.CREATED)
+                .cmdState(RvcCmdState.SENT)
                 .startTime(new Date())
                 .accountType(accountType)
                 .accountId(accountId)
