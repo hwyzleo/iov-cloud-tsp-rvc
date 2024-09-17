@@ -216,10 +216,19 @@
         <if test="vin != null and vin != ''">
             AND t.vin = #{vin}
         </if>
-        <if test="cmdStateRange != null and cmdStateRange != ''">
-            AND t.cmd_state IN (#{vin})
+        <if test="cmdTimeDayRange != null">
+            AND t.start_time >= DATE_SUB(t.start_time, INTERVAL #{cmdTimeDayRange} DAY)
         </if>
         ORDER BY t.id DESC
+    </select>
+
+    <!-- 通过指令ID查询指令记录 -->
+    <select id="selectPoByCmdId" parameterType="java.util.Map" resultMap="baseResultMap">
+        SELECT <include refid="baseColumnList"/>
+        FROM tb_cmd_record t
+        WHERE t.row_valid = 1
+        AND t.cmd_id = #{cmdId}
+        LIMIT 1
     </select>
 
     <!-- 根据Map对象统计记录数 -->

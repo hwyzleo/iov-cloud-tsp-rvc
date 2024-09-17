@@ -3,7 +3,6 @@ package net.hwyz.iov.cloud.tsp.rvc.service.facade.assembler;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.response.ControlResponse;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 

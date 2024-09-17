@@ -11,11 +11,9 @@ import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.repository.VehicleRvcReposi
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.cache.CacheService;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.repository.assembler.CmdRecordPoAssembler;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.repository.dao.CmdRecordDao;
-import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.repository.po.CmdRecordPo;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,7 +39,8 @@ public class VehicleRvcRepositoryImpl extends AbstractRepository<String, Vehicle
             VehicleRvcDo vehicleRvcDo = rvcFactory.buildVehicle(vin);
             Map<String, Object> map = new HashMap<>();
             map.put("vin", vin);
-            map.put("cmdStateRange", "0,1,2");
+            // 只查询24小时内指令
+            map.put("cmdTimeDayRange", 1);
             vehicleRvcDo.init(CmdRecordPoAssembler.INSTANCE.toDoList(cmdRecordDao.selectPoByMap(map)));
             return vehicleRvcDo;
         });
@@ -54,12 +53,14 @@ public class VehicleRvcRepositoryImpl extends AbstractRepository<String, Vehicle
 
     @Override
     public boolean save(VehicleRvcDo vehicleRvcDo) {
-        vehicleRvcDo.getCurrentCmd().values().forEach(rvcCmd -> {
-            if (rvcCmd.getState() != DoState.UNCHANGED) {
-                rvcCmdRepository.save(rvcCmd);
+        vehicleRvcDo.getCmdMap().values().forEach(rvcCmdDo -> {
+            if (rvcCmdDo.getState() != DoState.UNCHANGED) {
+                rvcCmdRepository.save(rvcCmdDo);
             }
         });
-        cacheService.setVehicleRvc(vehicleRvcDo);
+        if (vehicleRvcDo.getState() != DoState.UNCHANGED) {
+            cacheService.setVehicleRvc(vehicleRvcDo);
+        }
         return true;
     }
 

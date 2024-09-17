@@ -16,10 +16,7 @@ import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 缓存服务接口实现类
@@ -45,27 +42,31 @@ public class CacheServiceImpl implements CacheService {
         if (StrUtil.isNotBlank(vehicleRvcDoJson)) {
             JSONObject jsonObject = JSONUtil.parseObj(vehicleRvcDoJson);
             VehicleRvcDo vehicleRvcDo = rvcFactory.buildVehicle(vin);
-            String currentCmdJson = jsonObject.getStr("currentCmd");
-            Map<RemoteControlType, JSONObject> currentCmd = JSONUtil.toBean(currentCmdJson, new TypeReference<>() {
+            String cmdJson = jsonObject.getStr("cmdMap");
+            Map<String, JSONObject> cmdMap = JSONUtil.toBean(cmdJson, new TypeReference<>() {
             }, true);
             List<RvcCmdDo> rvcCmdList = new ArrayList<>();
-            currentCmd.values().forEach(rvcCmd -> {
-                RvcCmdDo rvcCmdDo = RvcCmdDo.builder()
-                        .id(rvcCmd.getLong("id"))
-                        .vin(rvcCmd.getStr("vin"))
-                        .cmdId(rvcCmd.getStr("cmdId"))
-                        .type(RemoteControlType.valueOf(rvcCmd.getStr("type")))
-                        .params(rvcCmd.getJSONObject("params").toBean(new TypeReference<>() {
-                        }))
-                        .cmdState(RvcCmdState.valueOf(rvcCmd.getStr("cmdState")))
-                        .failureCode(rvcCmd.getInt("failureCode"))
-                        .startTime(rvcCmd.getDate("startTime"))
-                        .endTime(rvcCmd.getDate("endTime"))
-                        .accountType(AccountType.valueOf(rvcCmd.getStr("accountType")))
-                        .accountId(rvcCmd.getStr("accountId"))
-                        .build();
-                rvcCmdDo.stateLoad();
-                rvcCmdList.add(rvcCmdDo);
+            cmdMap.values().forEach(rvcCmd -> {
+                Date startTime = rvcCmd.getDate("startTime");
+                // 只保留24小时内指令
+                if (System.currentTimeMillis() - startTime.getTime() <= 24 * 60 * 60 * 1000) {
+                    RvcCmdDo rvcCmdDo = RvcCmdDo.builder()
+                            .id(rvcCmd.getLong("id"))
+                            .vin(rvcCmd.getStr("vin"))
+                            .cmdId(rvcCmd.getStr("cmdId"))
+                            .type(RemoteControlType.valueOf(rvcCmd.getStr("type")))
+                            .params(rvcCmd.getJSONObject("params").toBean(new TypeReference<>() {
+                            }))
+                            .cmdState(RvcCmdState.valueOf(rvcCmd.getStr("cmdState")))
+                            .failureCode(rvcCmd.getInt("failureCode"))
+                            .startTime(rvcCmd.getDate("startTime"))
+                            .endTime(rvcCmd.getDate("endTime"))
+                            .accountType(AccountType.valueOf(rvcCmd.getStr("accountType")))
+                            .accountId(rvcCmd.getStr("accountId"))
+                            .build();
+                    rvcCmdDo.stateLoad();
+                    rvcCmdList.add(rvcCmdDo);
+                }
             });
             vehicleRvcDo.init(rvcCmdList);
             return Optional.of(vehicleRvcDo);

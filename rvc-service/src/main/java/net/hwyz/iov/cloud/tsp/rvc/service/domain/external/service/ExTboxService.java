@@ -1,10 +1,12 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.domain.external.service;
 
+import jakarta.validation.Valid;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.external.ExTboxServiceFallbackFactory;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.request.RemoteControlRequest;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.response.TboxCmdResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 外部TBOX业务服务
@@ -21,6 +23,6 @@ public interface ExTboxService {
      * @return TBOX指令响应
      */
     @PostMapping("/action/remoteControl")
-    TboxCmdResponse remoteControl(RemoteControlRequest request);
+    TboxCmdResponse remoteControl(@RequestBody @Valid RemoteControlRequest request);
 
 }

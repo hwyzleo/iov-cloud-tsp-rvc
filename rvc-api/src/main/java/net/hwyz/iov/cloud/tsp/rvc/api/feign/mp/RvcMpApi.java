@@ -30,4 +30,14 @@ public interface RvcMpApi {
      */
     Response<ControlResponse> getFindVehicleState(String vin, ClientAccount clientAccount);
 
+    /**
+     * 获取指令状态
+     *
+     * @param vin           车架号
+     * @param cmdId         指令ID
+     * @param clientAccount 终端用户
+     * @return 指令状态
+     */
+    Response<ControlResponse> getCmdState(String vin, String cmdId, ClientAccount clientAccount);
+
 }

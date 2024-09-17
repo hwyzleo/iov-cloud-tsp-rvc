@@ -59,4 +59,21 @@ public class RvcMpController implements RvcMpApi {
         return new Response<>("获取寻车状态成功", rvcAppService.getControlFunctionState(vin, RemoteControlType.FIND_VEHICLE));
     }
 
+    /**
+     * 获取指令状态
+     *
+     * @param vin           车架号
+     * @param cmdId         指令ID
+     * @param clientAccount 终端用户
+     * @return 指令状态
+     */
+    @Override
+    @GetMapping("/cmd")
+    public Response<ControlResponse> getCmdState(@RequestParam String vin, @RequestParam String cmdId,
+                                                 @RequestHeader ClientAccount clientAccount) {
+        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
+        logger.info("手机客户端[{}]获取车辆[{}]指令[{}]状态", ParamHelper.getClientAccountInfo(clientAccount), vin, cmdId);
+        return new Response<>("获取指令状态成功", rvcAppService.getCmdState(vin, cmdId));
+    }
+
 }

@@ -29,5 +29,13 @@ public class ControlResponse {
      * 远控指令状态
      */
     private RvcCmdState cmdState;
+    /**
+     * 远控指令错误码
+     */
+    private Integer failureCode;
+    /**
+     * 远控指令错误信息
+     */
+    private String failureMsg;
 
 }

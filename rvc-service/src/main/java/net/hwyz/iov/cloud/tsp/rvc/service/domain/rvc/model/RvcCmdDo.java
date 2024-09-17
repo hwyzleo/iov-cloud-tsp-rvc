@@ -2,6 +2,7 @@ package net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import net.hwyz.iov.cloud.tsp.framework.commons.domain.BaseDo;
 import net.hwyz.iov.cloud.tsp.framework.commons.domain.DomainObj;
 import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
@@ -16,6 +17,7 @@ import java.util.Map;
  *
  * @author hwyz_leo
  */
+@Slf4j
 @Getter
 @SuperBuilder
 public class RvcCmdDo extends BaseDo<Long> implements DomainObj<VehicleRvcDo> {
@@ -66,6 +68,56 @@ public class RvcCmdDo extends BaseDo<Long> implements DomainObj<VehicleRvcDo> {
      */
     public void init() {
         stateInit();
+    }
+
+    /**
+     * 指令超时
+     */
+    public void timeout() {
+        endTime = new Date();
+        cmdState = RvcCmdState.FAILURE;
+        // 超时错误码
+        failureCode = 1000;
+        stateChange();
+    }
+
+    /**
+     * 指令执行中
+     */
+    public void executing() {
+        if (cmdState == RvcCmdState.CREATED || cmdState == RvcCmdState.SENT) {
+            cmdState = RvcCmdState.EXECUTING;
+            stateChange();
+        } else {
+            logger.warn("车辆[{}]指令[{}]已经执行", vin, cmdId);
+        }
+    }
+
+    /**
+     * 指令执行成功
+     */
+    public void success() {
+        if (cmdState != RvcCmdState.SUCCESS && cmdState != RvcCmdState.FAILURE) {
+            cmdState = RvcCmdState.SUCCESS;
+            stateChange();
+        } else {
+            logger.warn("车辆[{}]指令[{}]已经执行结束", vin, cmdId);
+        }
+    }
+
+    /**
+     * 指令执行失败
+     *
+     * @param failureCode 指令错误码
+     */
+    public void failure(Integer failureCode) {
+        if (cmdState != RvcCmdState.SUCCESS && cmdState != RvcCmdState.FAILURE) {
+            this.failureCode = failureCode;
+            cmdState = RvcCmdState.FAILURE;
+            stateChange();
+        } else {
+            logger.warn("车辆[{}]指令[{}]已经执行结束", vin, cmdId);
+        }
     }
 
 }

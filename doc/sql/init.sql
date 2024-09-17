@@ -23,5 +23,7 @@ CREATE TABLE `db_rvc`.`tb_cmd_record`
     `row_version`  INT                  DEFAULT 1 COMMENT '记录版本',
     `row_valid`    TINYINT              DEFAULT 1 COMMENT '记录是否有效',
     PRIMARY KEY (`id`),
-    UNIQUE KEY (`cmd_id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='远控命令记录表';
+    UNIQUE KEY (`cmd_id`),
+    INDEX `idx_vin` (`vin`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='远控命令记录表';

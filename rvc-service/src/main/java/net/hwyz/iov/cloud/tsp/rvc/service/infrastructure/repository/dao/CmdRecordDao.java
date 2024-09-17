@@ -15,4 +15,12 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CmdRecordDao extends BaseDao<CmdRecordPo, Long> {
 
+    /**
+     * 通过指令ID查询指令记录
+     *
+     * @param cmdId 指令ID
+     * @return 指令记录
+     */
+    CmdRecordPo selectPoByCmdId(String cmdId);
+
 }
