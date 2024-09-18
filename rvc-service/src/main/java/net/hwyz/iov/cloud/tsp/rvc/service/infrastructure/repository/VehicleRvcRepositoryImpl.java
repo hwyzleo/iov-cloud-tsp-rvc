@@ -34,16 +34,18 @@ public class VehicleRvcRepositoryImpl extends AbstractRepository<String, Vehicle
 
     @Override
     public VehicleRvcDo getOrCreate(String vin) {
-        return cacheService.getVehicleRvc(vin).orElseGet(() -> {
+        VehicleRvcDo vehicleRvcDo = cacheService.getVehicleRvc(vin).orElseGet(() -> {
             logger.info("创建车辆[{}]远控领域对象", vin);
-            VehicleRvcDo vehicleRvcDo = rvcFactory.buildVehicle(vin);
+            VehicleRvcDo vehicleRvcDoTmp = rvcFactory.buildVehicle(vin);
             Map<String, Object> map = new HashMap<>();
             map.put("vin", vin);
             // 只查询24小时内指令
             map.put("cmdTimeDayRange", 1);
-            vehicleRvcDo.init(CmdRecordPoAssembler.INSTANCE.toDoList(cmdRecordDao.selectPoByMap(map)));
-            return vehicleRvcDo;
+            vehicleRvcDoTmp.init(CmdRecordPoAssembler.INSTANCE.toDoList(cmdRecordDao.selectPoByMap(map)));
+            return vehicleRvcDoTmp;
         });
+        vehicleRvcDo.stateLoad();
+        return vehicleRvcDo;
     }
 
     @Override

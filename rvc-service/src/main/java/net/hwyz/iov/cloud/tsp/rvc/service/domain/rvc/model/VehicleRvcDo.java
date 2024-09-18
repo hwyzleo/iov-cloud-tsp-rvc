@@ -55,6 +55,7 @@ public class VehicleRvcDo extends BaseDo<String> implements DomainObj<VehicleRvc
                 default -> {
                 }
             }
+            rvcCmdDo.stateLoad();
             cmdMapTmp.put(rvcCmdDo.getCmdId(), rvcCmdDo);
         }
         currentCmdMap = currentCmdMapTmp;

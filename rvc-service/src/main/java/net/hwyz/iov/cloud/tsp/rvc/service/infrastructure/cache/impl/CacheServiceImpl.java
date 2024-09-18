@@ -76,6 +76,7 @@ public class CacheServiceImpl implements CacheService {
 
     @Override
     public void setVehicleRvc(VehicleRvcDo vehicleRvcDo) {
+        logger.debug("更新车辆[{}]远控领域对象缓存", vehicleRvcDo.getVin());
         redisTemplate.opsForValue().set(REDIS_KEY_PREFIX_VEHICLE_RVC + vehicleRvcDo.getVin(),
                 JSONUtil.parse(vehicleRvcDo).toJSONString(0));
     }
