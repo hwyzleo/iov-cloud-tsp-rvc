@@ -39,7 +39,7 @@ public class RvcMpController implements RvcMpApi {
     @PostMapping("/action/findVehicle")
     public Response<ControlResponse> findVehicle(@RequestBody @Valid ControlRequest controlRequest,
                                                  @RequestHeader ClientAccount clientAccount) {
-        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
+        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getAccountId()), "用户ID不能为空");
         logger.info("手机客户端[{}]对车辆[{}]进行远程寻车", ParamHelper.getClientAccountInfo(clientAccount), controlRequest.getVin());
         return new Response<>("寻车操作成功", rvcAppService.findVehicle(controlRequest, clientAccount));
     }
@@ -54,7 +54,7 @@ public class RvcMpController implements RvcMpApi {
     @Override
     @GetMapping("/findVehicle")
     public Response<ControlResponse> getFindVehicleState(@RequestParam String vin, @RequestHeader ClientAccount clientAccount) {
-        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
+        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getAccountId()), "用户ID不能为空");
         logger.info("手机客户端[{}]获取车辆[{}]远程寻车状态", ParamHelper.getClientAccountInfo(clientAccount), vin);
         return new Response<>("获取寻车状态成功", rvcAppService.getControlFunctionState(vin, RemoteControlType.FIND_VEHICLE));
     }
@@ -71,7 +71,7 @@ public class RvcMpController implements RvcMpApi {
     @GetMapping("/cmd")
     public Response<ControlResponse> getCmdState(@RequestParam String vin, @RequestParam String cmdId,
                                                  @RequestHeader ClientAccount clientAccount) {
-        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getUid()), "用户ID不能为空");
+        Assert.isTrue(StrUtil.isNotBlank(clientAccount.getAccountId()), "用户ID不能为空");
         logger.info("手机客户端[{}]获取车辆[{}]指令[{}]状态", ParamHelper.getClientAccountInfo(clientAccount), vin, cmdId);
         return new Response<>("获取指令状态成功", rvcAppService.getCmdState(vin, cmdId));
     }

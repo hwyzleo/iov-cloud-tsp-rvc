@@ -7,6 +7,7 @@ import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.request.ControlRequest;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.response.ControlResponse;
+import net.hwyz.iov.cloud.tsp.rvc.service.domain.external.service.ExPushService;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.external.service.ExTboxService;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.factory.RvcFactory;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
@@ -20,7 +21,12 @@ import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.util.RvcFailureHelper;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.request.RemoteControlRequest;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.response.TboxCmdResponse;
+import net.hwyz.iov.cloud.tsp.umr.api.contract.request.SingleMobilePushRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 远程车辆控制相关应用服务类
@@ -35,8 +41,15 @@ public class RvcAppService {
     private final RvcService rvcService;
     private final RvcFactory rvcFactory;
     private final ExTboxService exTboxService;
+    private final ExPushService exPushService;
     private final RvcFailureHelper rvcFailureHelper;
     private final VehicleRvcRepository vehicleRvcRepository;
+
+    /**
+     * 远控消息推送模板代码
+     */
+    @Value("${msg-template.rvc:MP_000001}")
+    private String rvcMsgTemplateCode;
 
     /**
      * 寻车
@@ -47,7 +60,7 @@ public class RvcAppService {
      */
     public ControlResponse findVehicle(ControlRequest controlRequest, ClientAccount clientAccount) {
         String vin = controlRequest.getVin();
-        logger.info("用户[{}]执行远控：寻车[{}]", clientAccount.getUid(), vin);
+        logger.info("用户[{}]执行远控：寻车[{}]", clientAccount.getAccountId(), vin);
         VehicleRvcDo vehicleRvcDo = rvcService.getOrCreate(vin);
         RvcCmdDo findVehicleCmd = vehicleRvcDo.isFindVehicleExecuting();
         if (findVehicleCmd == null) {
@@ -57,12 +70,12 @@ public class RvcAppService {
                     .params(controlRequest.getParams())
                     .build());
             findVehicleCmd = rvcFactory.buildCmd(vin, tboxCmd.getCmdId(), RemoteControlType.FIND_VEHICLE,
-                    controlRequest.getParams(), AccountType.USER, clientAccount.getUid());
+                    controlRequest.getParams(), AccountType.USER, clientAccount.getAccountId());
             // TODO 后期加省市区
             vehicleRvcDo.findVehicle(findVehicleCmd);
             vehicleRvcRepository.save(vehicleRvcDo);
         } else {
-            logger.warn("用户[{}]执行远控：寻车[{}]，正在执行中", clientAccount.getUid(), vin);
+            logger.warn("用户[{}]执行远控：寻车[{}]，正在执行中", clientAccount.getAccountId(), vin);
         }
         return ControlResponseAssembler.INSTANCE.fromDo(findVehicleCmd);
     }
@@ -127,6 +140,18 @@ public class RvcAppService {
         VehicleRvcDo vehicleRvcDo = rvcService.getOrCreate(vin);
         vehicleRvcDo.updateCmd(cmdId, cmdState, failureCode);
         vehicleRvcRepository.save(vehicleRvcDo);
+        RvcCmdDo rvcCmdDo = vehicleRvcDo.getCmd(cmdId);
+        Map<String, Object> extras = new HashMap<>(3);
+        extras.put("cmdId", cmdId);
+        extras.put("cmdState", cmdState.name());
+        if (cmdState == RvcCmdState.FAILURE) {
+            extras.put("failureMsg", rvcFailureHelper.getMessage(failureCode));
+        }
+        exPushService.pushMobile(SingleMobilePushRequest.builder()
+                .accountId(rvcCmdDo.getAccountId())
+                .msgTemplateCode(rvcMsgTemplateCode)
+                .extras(extras)
+                .build());
     }
 
 }

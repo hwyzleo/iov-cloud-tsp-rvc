@@ -24,6 +24,7 @@
     <properties>
         <rvc.version>0.0.1-SNAPSHOT</rvc.version>
         <tbox.version>0.0.1-SNAPSHOT</tbox.version>
+        <umr.version>0.0.1-SNAPSHOT</umr.version>
     </properties>
 
 </project>

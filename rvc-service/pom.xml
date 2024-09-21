@@ -26,6 +26,11 @@
             <artifactId>tbox-api</artifactId>
             <version>${tbox.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.hwyz.iov.cloud.tsp</groupId>
+            <artifactId>umr-api</artifactId>
+            <version>${umr.version}</version>
+        </dependency>
 
         <!-- 框架: 异常 -->
         <dependency>
