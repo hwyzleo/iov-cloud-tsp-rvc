@@ -46,10 +46,11 @@
             <version>${framework-mysql.version}</version>
         </dependency>
 
-        <!-- Redis相关 -->
+        <!-- 框架: Redis -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>net.hwyz.iov.cloud.tsp</groupId>
+            <artifactId>framework-redis-starter</artifactId>
+            <version>${framework-redis.version}</version>
         </dependency>
 
         <dependency>

@@ -87,7 +87,8 @@ public class VehicleRvcDo extends BaseDo<String> implements DomainObj<VehicleRvc
     public RvcCmdDo getCmd(String cmdId) {
         RvcCmdDo rvcCmdDo = cmdMap.get(cmdId);
         if (rvcCmdDo != null) {
-            if (isTimeout(rvcCmdDo)) {
+            if (isTimeout(rvcCmdDo) && rvcCmdDo.getCmdState() != RvcCmdState.SUCCESS
+                    && rvcCmdDo.getCmdState() != RvcCmdState.FAILURE) {
                 logger.warn("远控指令[{}]已超时，进行补偿操作", rvcCmdDo.getCmdId());
                 rvcCmdDo.timeout();
                 finishedCmdSet.add(cmdId);
