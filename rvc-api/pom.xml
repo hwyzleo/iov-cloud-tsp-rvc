@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.hwyz.iov.cloud.tsp</groupId>
-        <artifactId>rvc</artifactId>
+        <artifactId>api-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
 
     <artifactId>rvc-api</artifactId>
@@ -14,5 +15,18 @@
 
     <properties>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>maven-snapshots</id>
+            <url>http://nexus-internal.rox-motor.com:8081/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
