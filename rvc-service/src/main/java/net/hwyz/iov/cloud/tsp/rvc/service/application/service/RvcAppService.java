@@ -2,8 +2,8 @@ package net.hwyz.iov.cloud.tsp.rvc.service.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.hwyz.iov.cloud.tsp.framework.commons.bean.ClientAccount;
-import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
+import net.hwyz.iov.cloud.framework.common.bean.ClientAccount;
+import net.hwyz.iov.cloud.framework.common.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.request.ControlRequest;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.response.ControlResponse;

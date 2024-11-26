@@ -1,6 +1,7 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.exception;
 
-import net.hwyz.iov.cloud.tsp.framework.commons.exception.BaseException;
+
+import net.hwyz.iov.cloud.framework.common.exception.BaseException;
 
 /**
  * 远程车辆控制服务基础异常

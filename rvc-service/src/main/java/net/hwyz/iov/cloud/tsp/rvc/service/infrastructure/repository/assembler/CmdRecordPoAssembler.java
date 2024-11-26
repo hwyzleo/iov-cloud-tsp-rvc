@@ -28,7 +28,7 @@ public interface CmdRecordPoAssembler {
      */
     @Mappings({
             @Mapping(target = "type", source = "cmdType"),
-            @Mapping(target = "params", expression = "java(net.hwyz.iov.cloud.tsp.framework.commons.util.AssemblerHelper.json2Map(cmdRecordPo.getCmdParam()))"),
+            @Mapping(target = "params", expression = "java(net.hwyz.iov.cloud.framework.common.util.AssemblerHelper.json2Map(cmdRecordPo.getCmdParam()))"),
             @Mapping(target = "cmdState", expression = "java(net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState.valOf(cmdRecordPo.getCmdState()))")
     })
     RvcCmdDo toDo(CmdRecordPo cmdRecordPo);
@@ -49,7 +49,7 @@ public interface CmdRecordPoAssembler {
      */
     @Mappings({
             @Mapping(target = "cmdType", source = "type"),
-            @Mapping(target = "cmdParam", expression = "java(net.hwyz.iov.cloud.tsp.framework.commons.util.AssemblerHelper.map2Json(rvcCmdDo.getParams()))"),
+            @Mapping(target = "cmdParam", expression = "java(net.hwyz.iov.cloud.framework.common.util.AssemblerHelper.map2Json(rvcCmdDo.getParams()))"),
             @Mapping(target = "cmdState", source = "cmdState.value")
     })
     CmdRecordPo fromDo(RvcCmdDo rvcCmdDo);

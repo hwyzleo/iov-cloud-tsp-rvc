@@ -3,9 +3,9 @@ package net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-import net.hwyz.iov.cloud.tsp.framework.commons.domain.BaseDo;
-import net.hwyz.iov.cloud.tsp.framework.commons.domain.DomainObj;
-import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
+import net.hwyz.iov.cloud.framework.common.domain.BaseDo;
+import net.hwyz.iov.cloud.framework.common.domain.DomainObj;
+import net.hwyz.iov.cloud.framework.common.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
 import net.hwyz.iov.cloud.tsp.tbox.api.contract.enums.RemoteControlType;
 

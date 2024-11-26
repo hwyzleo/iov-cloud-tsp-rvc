@@ -1,7 +1,7 @@
 package net.hwyz.iov.cloud.tsp.rvc.api.feign.mp;
 
-import net.hwyz.iov.cloud.tsp.framework.commons.bean.ClientAccount;
-import net.hwyz.iov.cloud.tsp.framework.commons.bean.Response;
+import net.hwyz.iov.cloud.framework.common.bean.ClientAccount;
+import net.hwyz.iov.cloud.framework.common.bean.Response;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.request.ControlRequest;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.response.ControlResponse;
 

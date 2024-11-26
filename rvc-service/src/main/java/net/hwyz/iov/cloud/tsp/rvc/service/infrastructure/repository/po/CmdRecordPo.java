@@ -8,8 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import lombok.experimental.SuperBuilder;
-import net.hwyz.iov.cloud.tsp.framework.mysql.po.BasePo;
 import lombok.*;
+import net.hwyz.iov.cloud.framework.mysql.po.BasePo;
 
 /**
  * <p>

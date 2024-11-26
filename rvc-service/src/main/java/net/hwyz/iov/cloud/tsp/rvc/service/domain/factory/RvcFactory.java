@@ -1,6 +1,6 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.domain.factory;
 
-import net.hwyz.iov.cloud.tsp.framework.commons.enums.AccountType;
+import net.hwyz.iov.cloud.framework.common.enums.AccountType;
 import net.hwyz.iov.cloud.tsp.rvc.api.contract.enums.RvcCmdState;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.VehicleRvcDo;

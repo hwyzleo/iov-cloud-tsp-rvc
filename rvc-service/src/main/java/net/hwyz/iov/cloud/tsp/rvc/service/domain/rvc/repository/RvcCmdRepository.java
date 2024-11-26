@@ -1,6 +1,6 @@
 package net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.repository;
 
-import net.hwyz.iov.cloud.tsp.framework.commons.domain.BaseRepository;
+import net.hwyz.iov.cloud.framework.common.domain.BaseRepository;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 
 /**

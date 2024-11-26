@@ -2,7 +2,7 @@ package net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.hwyz.iov.cloud.tsp.framework.commons.domain.AbstractRepository;
+import net.hwyz.iov.cloud.framework.common.domain.AbstractRepository;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.model.RvcCmdDo;
 import net.hwyz.iov.cloud.tsp.rvc.service.domain.rvc.repository.RvcCmdRepository;
 import net.hwyz.iov.cloud.tsp.rvc.service.infrastructure.repository.assembler.CmdRecordPoAssembler;
